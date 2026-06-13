@@ -1,112 +1,262 @@
-# Library heart desease prediction
+# Library heart disease prediction
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
 import time
+import base64
+from io import BytesIO
 from PIL import Image
 
-# Load train model
-model = pickle.load(open('model/best_model.pkl', 'rb'))
 
-# Configurate Streamlit app
-st.set_page_config(page_title="Heart Disease Prediction", page_icon="❤️", layout="centered")
+# =========================================================
+# KONFIGURASI HALAMAN
+# =========================================================
+st.set_page_config(
+    page_title="Prediksi Penyakit Jantung",
+    page_icon="❤️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# Fuction to predict heart disease
-#def predict_heart_disease():
-st.title("Heart Disease Prediction")
-st.write("""
-This application predicts the likelihood of heart disease based on various health parameters. Please fill in the details below to get your prediction.
-Data obtained from the UCI Machine Learning Repository: [Heart Disease Dataset](https://archive.ics.uci.edu/ml/datasets/heart+Disease)
-""")
-st.image("public/heart-disease.jpg", caption="Heart Disease Prediction", use_container_width=True)
 
-# Input fields for user data
-st.sidebar.header("Input Parameters")
-st.sidebar.markdown("""Please enter the following health parameters to predict the likelihood of heart disease:
-- Age: Age of the patient (years)
-- Sex: Gender of the patient (1 = male, 0 = female)
-""")
+# =========================================================
+# CUSTOM CSS — biar tampilan lebih rapi & menarik
+# =========================================================
+st.markdown("""
+<style>
+    /* Header utama */
+    .main-title {
+        font-size: 42px;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ff4b4b, #ff8a8a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0px;
+    }
+    .sub-title {
+        font-size: 16px;
+        color: #b0b0b0;
+        margin-top: -10px;
+    }
+    .author {
+        font-size: 14px;
+        color: #888;
+    }
 
-cp = st.sidebar.selectbox("Chest Pain Type (cp)", [0, 1, 2, 3])
-if cp == 0:
-    st.sidebar.write("Typical Angina")
-elif cp == 1:
-    st.sidebar.write("Atypical Angina")
-elif cp == 2:
-    st.sidebar.write("Non-Anginal Pain")
-elif cp == 3:
-    st.sidebar.write("Asymptomatic")
+    /* Card untuk gambar */
+    .img-card {
+        background-color: #1e1e26;
+        border-radius: 16px;
+        padding: 14px;
+        text-align: center;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.25);
+        transition: transform 0.2s ease;
+    }
+    .img-card:hover {
+        transform: translateY(-4px);
+    }
+    .img-card img {
+        border-radius: 12px;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .img-caption {
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #e0e0e0;
+    }
 
-thalach = st.sidebar.slider("Maximum Heart Rate Achieved (thalach)", 60, 220, 150)
+    /* Section header */
+    .section-header {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 10px;
+        margin-bottom: 6px;
+        border-left: 5px solid #ff4b4b;
+        padding-left: 10px;
+    }
 
-slope = st.sidebar.selectbox("Slope of the Peak Exercise ST Segment (slope)", [0, 1, 2])
-if slope == 0:
-    st.sidebar.write("Upsloping")
-elif slope == 1:
-    st.sidebar.write("Flat")
-elif slope == 2:
-    st.sidebar.write("Downsloping")
+    /* Hasil prediksi */
+    .result-box-positive {
+        background-color: rgba(255, 75, 75, 0.12);
+        border: 1px solid #ff4b4b;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #ff6b6b;
+    }
+    .result-box-negative {
+        background-color: rgba(75, 200, 120, 0.12);
+        border: 1px solid #4bc878;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #4bc878;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-oldpeak = st.sidebar.slider("ST Depression Induced by Exercise Relative to Rest (oldpeak)", 0.0, 6.0, 1.0)
 
-exang = st.sidebar.selectbox("Exercise Induced Angina (exang)", [0, 1])
-if exang == 0:
-    st.sidebar.write("No")
-elif exang == 1:
-    st.sidebar.write("Yes")
+# =========================================================
+# FUNGSI BANTUAN
+# =========================================================
+def image_to_base64(img: Image.Image, size=None) -> str:
+    """Konversi gambar PIL ke base64 agar bisa dibungkus HTML/CSS custom."""
+    if size:
+        img = img.resize(size)
+    buffered = BytesIO()
+    img.convert("RGB").save(buffered, format="JPEG", quality=90)
+    return base64.b64encode(buffered.getvalue()).decode()
 
-ca = st.sidebar.selectbox("Number of Major Vessels Colored by Fluoroscopy (ca)", [0, 1, 2, 3])
-if ca == 0:
-    st.sidebar.write("0")
-elif ca == 1:
-    st.sidebar.write("1")
-elif ca == 2:
-    st.sidebar.write("2")
-elif ca == 3:
-    st.sidebar.write("3")
 
-thal = st.sidebar.selectbox("Thalassemia (thal)", [0, 1, 2, 3])
-if thal == 0:
-    st.sidebar.write("Normal")
-elif thal == 1:
-    st.sidebar.write("Fixed Defect")
-elif thal == 2:
-    st.sidebar.write("Reversible Defect")
-elif thal == 3:
-    st.sidebar.write("Unknown")
+def show_image_card(image_path, caption, size=(280, 200)):
+    """Tampilkan gambar dalam card rounded yang lebih menarik."""
+    img = Image.open(image_path)
+    img_b64 = image_to_base64(img, size)
+    st.markdown(f"""
+        <div class="img-card">
+            <img src="data:image/jpeg;base64,{img_b64}" />
+            <div class="img-caption">{caption}</div>
+        </div>
+    """, unsafe_allow_html=True)
 
-sex = st.sidebar.selectbox("Sex", [0, 1])
-if sex == 0:
-    st.sidebar.write("Female")
-elif sex == 1:
-    st.sidebar.write("Male")
 
-age = st.sidebar.slider("Age", 20, 100, 50)
+# =========================================================
+# HEADER
+# =========================================================
+st.markdown('<div class="main-title">❤️ Dashboard Prediksi Penyakit Jantung</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="author">Dibuat oleh: '
+    '<a href="https://www.linkedin.com/in/apriyanto19/" target="_blank">Apriyanto</a></div>',
+    unsafe_allow_html=True
+)
+st.write("")
 
-# Create a DataFrame for the input data
-data = {
-    'cp': cp,
-    'thalach': thalach,
-    'slope': slope,
-    'oldpeak': oldpeak,
-    'exang': exang,
-    'ca': ca,
-    'thal': thal,
-    'sex': sex,
-    'age': age
-}
-input_data = pd.DataFrame([data])
-st.write(input_data)
+st.markdown("""
+<div class="sub-title">
+Aplikasi ini memprediksi <b>potensi penyakit jantung</b> berdasarkan data klinis pasien
+menggunakan model Machine Learning. Dataset latih berasal dari
+<a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank">Heart Disease Dataset (UCI ML)</a>.
+</div>
+""", unsafe_allow_html=True)
 
-# Predict heart disease
-if st.sidebar.button("Predict"):
-    with st.spinner("Predicting..."):
-        time.sleep(2)  # Simulate a delay for prediction
-        prediction = model.predict(input_data)
-        if prediction[0] == 1:
-            st.snow()
-            st.error("The model predicts that you have heart disease. Please consult a healthcare professional for further evaluation.")
+st.write("---")
+
+
+# =========================================================
+# GAMBAR ILUSTRASI (man / woman heart attack)
+# =========================================================
+st.markdown('<div class="section-header">⚠️ Kenali Gejala Sakit Jantung</div>', unsafe_allow_html=True)
+st.write("Nyeri dada yang menjalar dan tekanan di area dada bisa menjadi tanda peringatan penyakit jantung, baik pada pria maupun wanita.")
+
+col1, col2 = st.columns(2)
+with col1:
+    show_image_card("man-heart-attack.jpg", "Gejala pada Pria")
+with col2:
+    show_image_card("woman-heart-attack.jpg", "Gejala pada Wanita")
+
+st.write("---")
+
+
+# =========================================================
+# SIDEBAR — INPUT DATA
+# =========================================================
+st.sidebar.markdown("## 🩺 Menu Aplikasi")
+add_selectitem = st.sidebar.selectbox("Pilih Tools:", ("Prediksi Penyakit Jantung",))
+
+st.sidebar.markdown("---")
+st.sidebar.header("📥 INPUT DATA")
+uploaded_file = st.sidebar.file_uploader("Upload file CSV", type=["csv"])
+
+if uploaded_file is not None:
+    input_df = pd.read_csv(uploaded_file)
+else:
+    def user_input_features():
+        st.sidebar.markdown("### ✍️ Input Manual")
+
+        cp = st.sidebar.selectbox('Tipe Nyeri Dada', [1, 2, 3, 4])
+        if cp == 1:
+            wcp = "Nyeri dada tipe angina"
+        elif cp == 2:
+            wcp = "Nyeri dada tipe nyeri tidak stabil"
+        elif cp == 3:
+            wcp = "Nyeri dada tipe nyeri tidak stabil yang parah"
         else:
-            st.balloons()
-            st.success("The model predicts that you do not have heart disease. However, please maintain a healthy lifestyle and consult a healthcare professional for regular check-ups.")
+            wcp = "Nyeri dada tidak terkait dengan masalah jantung"
+        st.sidebar.caption(f"ℹ️ {wcp}")
+
+        thalach = st.sidebar.slider("Maximum Heart Rate Achieved", 71, 202, 80)
+        slope = st.sidebar.slider("Kemiringan segmen ST (EKG)", 0, 2, 1)
+        oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
+        exang = st.sidebar.slider("Exercise Induced Angina", 0, 1, 1)
+        ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama", 0, 3, 1)
+        thal = st.sidebar.slider("Hasil Tes Thalium", 1, 3, 1)
+
+        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
+        sex = 0 if sex == "Perempuan" else 1
+
+        age = st.sidebar.slider("Usia", 20, 100, 50)
+
+        data = {
+            'cp': cp,
+            'thalach': thalach,
+            'slope': slope,
+            'oldpeak': oldpeak,
+            'exang': exang,
+            'ca': ca,
+            'thal': thal,
+            'sex': sex,
+            'age': age
+        }
+        features = pd.DataFrame(data, index=[0])
+        return features
+
+    input_df = user_input_features()
+
+st.sidebar.markdown("---")
+predict_btn = st.sidebar.button("🔍 Lakukan Prediksi", use_container_width=True)
+
+
+# =========================================================
+# DATA INPUT PREVIEW
+# =========================================================
+loaded_model = None
+
+if predict_btn:
+    df = input_df
+    st.markdown('<div class="section-header">📋 Data Input</div>', unsafe_allow_html=True)
+    st.dataframe(df, use_container_width=True)
+
+    with open("best_model.pkl", 'rb') as file:
+        loaded_model = pickle.load(file)
+
+
+# =========================================================
+# HASIL PREDIKSI
+# =========================================================
+if loaded_model is not None:
+    prediction = loaded_model.predict(df)
+
+    st.markdown('<div class="section-header">🎯 Hasil Prediksi</div>', unsafe_allow_html=True)
+
+    with st.spinner('Sedang memproses prediksi...'):
+        time.sleep(2)
+
+    if (prediction == 0).any():
+        st.markdown('<div class="result-box-negative">✅ TIDAK TERINDIKASI PENYAKIT JANTUNG</div>', unsafe_allow_html=True)
+        result_img = "strong-heart.jpg"
+    else:
+        st.markdown('<div class="result-box-positive">⚠️ ADA POTENSI PENYAKIT JANTUNG</div>', unsafe_allow_html=True)
+        result_img = "heart-disease.jpg"
+
+    st.write("")
+    img_col, _ = st.columns([1, 2])
+    with img_col:
+        show_image_card(result_img, "")
