@@ -234,7 +234,7 @@ if predict_btn:
     st.markdown('<div class="section-header">📋 Data Input</div>', unsafe_allow_html=True)
     st.dataframe(df, use_container_width=True)
 
-    with open("best_model.pkl", 'rb') as file:
+    with open("model/best_model.pkl", 'rb') as file:
         loaded_model = pickle.load(file)
 
 
