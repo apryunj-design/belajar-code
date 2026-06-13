@@ -7,7 +7,7 @@ import time
 from PIL import Image
 
 # Load train model
-model = pickle.load(open('best_model.pkl', 'rb'))
+model = pickle.load(open('model/best_model.pkl', 'rb'))
 
 # Configurate Streamlit app
 st.set_page_config(page_title="Heart Disease Prediction", page_icon="❤️", layout="centered")
