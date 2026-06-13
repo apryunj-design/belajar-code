@@ -142,7 +142,7 @@ st.write("")
 st.markdown("""
 <div class="sub-title">
 Aplikasi ini memprediksi <b>potensi penyakit jantung</b> berdasarkan data klinis pasien
-menggunakan model Machine Learning. Dataset latih berasal dari
+menggunakan model Machine Learning. Dataset training berasal dari
 <a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank">Heart Disease Dataset (UCI ML)</a>.
 </div>
 """, unsafe_allow_html=True)
