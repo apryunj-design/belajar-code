@@ -158,9 +158,9 @@ st.write("Nyeri dada yang menjalar dan tekanan di area dada bisa menjadi tanda p
 
 col1, col2 = st.columns(2)
 with col1:
-    show_image_card("man-heart-attack.jpg", "Gejala pada Pria")
+    show_image_card("public/man-heart-attack.jpg", "Gejala pada Pria")
 with col2:
-    show_image_card("woman-heart-attack.jpg", "Gejala pada Wanita")
+    show_image_card("public/woman-heart-attack.jpg", "Gejala pada Wanita")
 
 st.write("---")
 
@@ -251,10 +251,10 @@ if loaded_model is not None:
 
     if (prediction == 0).any():
         st.markdown('<div class="result-box-negative">✅ TIDAK TERINDIKASI PENYAKIT JANTUNG</div>', unsafe_allow_html=True)
-        result_img = "strong-heart.jpg"
+        result_img = "public/strong-heart.jpg"
     else:
         st.markdown('<div class="result-box-positive">⚠️ ADA POTENSI PENYAKIT JANTUNG</div>', unsafe_allow_html=True)
-        result_img = "heart-disease.jpg"
+        result_img = "public/heart-disease.jpg"
 
     st.write("")
     img_col, _ = st.columns([1, 2])
