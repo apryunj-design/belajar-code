@@ -213,7 +213,7 @@ else:
         thal = st.sidebar.slider("Hasil Tes Thalium (thal)", 1, 3, 1)
         if thal == 1:
             wthal = "Normal"
-        elif thal == 2
+        elif thal == 2:
             wthal = "Ada defek tetap"
         else:
             wthal = "Ada defek dapat dipulihkan"
