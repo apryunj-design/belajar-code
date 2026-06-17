@@ -181,15 +181,7 @@ else:
     def user_input_features():
         st.sidebar.markdown("### ✍️ Input Manual")
 
-        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
-        if sex == "Perempuan":
-            sex = 0
-        elif sex == "Pria":
-            sex = 1
-
-        age = st.sidebar.slider("Usia", 20, 100, 50)
-
-        cp = st.sidebar.slider('Tipe Nyeri Dada', [1, 2, 3, 4])
+        cp = st.sidebar.selectbox('Tipe Nyeri Dada', [1, 2, 3, 4])
         if cp == 1:
             wcp = "Nyeri dada tipe angina"
         elif cp == 2:
@@ -207,16 +199,21 @@ else:
         ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama", 0, 3, 1)
         thal = st.sidebar.slider("Hasil Tes Thalium", 1, 3, 1)
 
+        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
+        sex = 0 if sex == "Perempuan" else 1
+
+        age = st.sidebar.slider("Usia", 20, 100, 50)
+
         data = {
-            'sex': sex,
-            'age': age,
             'cp': cp,
             'thalach': thalach,
             'slope': slope,
             'oldpeak': oldpeak,
             'exang': exang,
             'ca': ca,
-            'thal': thal
+            'thal': thal,
+            'sex': sex,
+            'age': age
         }
         features = pd.DataFrame(data, index=[0])
         return features
