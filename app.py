@@ -197,7 +197,7 @@ else:
             wcp = "Nyeri dada tidak terkait dengan masalah jantung"
         st.sidebar.caption(f"ℹ️ {wcp}")
 
-        thalach = st.sidebar.slider("Maximum Heart Rate Achieved (thalach)", 71, 202, 80)
+        thalach = st.sidebar.slider("Maksimum detak jantung saat olahraga (thalach)", 71, 202, 80)
         slope = st.sidebar.slider("Kemiringan segmen ST (slope)", 0, 2, 1)
         oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
         
