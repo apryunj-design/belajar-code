@@ -200,9 +200,25 @@ else:
         thalach = st.sidebar.slider("Maximum Heart Rate Achieved (thalach)", 71, 202, 80)
         slope = st.sidebar.slider("Kemiringan segmen ST (slope)", 0, 2, 1)
         oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
+        
         exang = st.sidebar.slider("Exercise Induced Angina (exang)", 0, 1, 1)
+        if exang == 0:
+            wexang = "Tidak"
+        else:
+            wexang = "Ya"
+        st.sidebar.caption(f"ℹ️ {wexang}")
+        
         ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama (ca)", 0, 3, 1)
+        
         thal = st.sidebar.slider("Hasil Tes Thalium (thal)", 1, 3, 1)
+        if thal == 1:
+            wthal = "Normal"
+        elif thal == 2
+            wthal = "Ada defek tetap"
+        else:
+            wthal = "Ada defek dapat dipulihkan"
+        st.sidebar.caption(f"ℹ️ {wthal}")
+    
 
         data = {
             'cp': cp,
