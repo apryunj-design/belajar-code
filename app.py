@@ -181,7 +181,12 @@ else:
     def user_input_features():
         st.sidebar.markdown("### ✍️ Input Manual")
 
-        cp = st.sidebar.selectbox('Tipe Nyeri Dada', [1, 2, 3, 4])
+        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
+        sex = 0 if sex == "Perempuan" else 1
+
+        age = st.sidebar.slider("Usia", 20, 100, 50)
+
+        cp = st.sidebar.slider('Tipe Nyeri Dada', 1, 4, 1)
         if cp == 1:
             wcp = "Nyeri dada tipe angina"
         elif cp == 2:
@@ -193,16 +198,11 @@ else:
         st.sidebar.caption(f"ℹ️ {wcp}")
 
         thalach = st.sidebar.slider("Maximum Heart Rate Achieved", 71, 202, 80)
-        slope = st.sidebar.slider("Kemiringan segmen ST (EKG)", 0, 2, 1)
-        oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
+        slope = st.sidebar.slider("Kemiringan segmen ST", 0, 2, 1)
+        oldpeak = st.sidebar.slider("Depresi segmen ST", 0.0, 6.2, 1.0)
         exang = st.sidebar.slider("Exercise Induced Angina", 0, 1, 1)
         ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama", 0, 3, 1)
         thal = st.sidebar.slider("Hasil Tes Thalium", 1, 3, 1)
-
-        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
-        sex = 0 if sex == "Perempuan" else 1
-
-        age = st.sidebar.slider("Usia", 20, 100, 50)
 
         data = {
             'cp': cp,
