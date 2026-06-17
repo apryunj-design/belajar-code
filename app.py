@@ -181,12 +181,12 @@ else:
     def user_input_features():
         st.sidebar.markdown("### ✍️ Input Manual")
 
-        sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
+        sex = st.sidebar.selectbox("Jenis kelamin", ('Perempuan', 'Pria'))
         sex = 0 if sex == "Perempuan" else 1
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
-        cp = st.sidebar.slider('Jenis Nyeri Dada (cp)', 1, 4, 1)
+        cp = st.sidebar.slider('Jenis nyeri dada (cp)', 1, 4, 1)
         if cp == 1:
             wcp = "Nyeri dada tipe angina"
         elif cp == 2:
@@ -208,9 +208,9 @@ else:
             wexang = "Ya"
         st.sidebar.caption(f"ℹ️ {wexang}")
         
-        ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama (ca)", 0, 3, 1)
+        ca = st.sidebar.slider("Jumlah pembuluh darah utama (ca)", 0, 3, 1)
         
-        thal = st.sidebar.slider("Hasil Tes Thalium (thal)", 1, 3, 1)
+        thal = st.sidebar.slider("Hasil tes Thalium (thal)", 1, 3, 1)
         if thal == 1:
             wthal = "Normal"
         elif thal == 2:
