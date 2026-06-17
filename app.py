@@ -186,7 +186,7 @@ else:
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
-        cp = st.sidebar.slider('Tipe Nyeri Dada', 1, 4, 1)
+        cp = st.sidebar.slider('Jenis Nyeri Dada (cp)', 1, 4, 1)
         if cp == 1:
             wcp = "Nyeri dada tipe angina"
         elif cp == 2:
@@ -197,12 +197,12 @@ else:
             wcp = "Nyeri dada tidak terkait dengan masalah jantung"
         st.sidebar.caption(f"ℹ️ {wcp}")
 
-        thalach = st.sidebar.slider("Maximum Heart Rate Achieved", 71, 202, 80)
-        slope = st.sidebar.slider("Kemiringan segmen ST", 0, 2, 1)
-        oldpeak = st.sidebar.slider("Depresi segmen ST", 0.0, 6.2, 1.0)
-        exang = st.sidebar.slider("Exercise Induced Angina", 0, 1, 1)
-        ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama", 0, 3, 1)
-        thal = st.sidebar.slider("Hasil Tes Thalium", 1, 3, 1)
+        thalach = st.sidebar.slider("Maximum Heart Rate Achieved (thalach)", 71, 202, 80)
+        slope = st.sidebar.slider("Kemiringan segmen ST (slope)", 0, 2, 1)
+        oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
+        exang = st.sidebar.slider("Exercise Induced Angina (exang)", 0, 1, 1)
+        ca = st.sidebar.slider("Jumlah Pembuluh Darah Utama (ca)", 0, 3, 1)
+        thal = st.sidebar.slider("Hasil Tes Thalium (thal)", 1, 3, 1)
 
         data = {
             'cp': cp,
