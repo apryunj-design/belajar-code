@@ -181,7 +181,7 @@ else:
     def user_input_features():
         st.sidebar.markdown("### ✍️ Input Manual")
 
-        cp = st.sidebar.selectbox('Tipe Nyeri Dada', [1, 2, 3, 4])
+        cp = st.sidebar.slider('Tipe Nyeri Dada', [1, 2, 3, 4])
         if cp == 1:
             wcp = "Nyeri dada tipe angina"
         elif cp == 2:
