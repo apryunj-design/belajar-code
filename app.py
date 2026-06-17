@@ -182,7 +182,7 @@ else:
         st.sidebar.markdown("### ✍️ Input Manual")
 
         sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
-            sex = 0 if sex == "Perempuan" else 1
+            sex = 0 if sex == "Perempuan" else: 1
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
