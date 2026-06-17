@@ -201,7 +201,7 @@ else:
         slope = st.sidebar.slider("Kemiringan segmen ST (slope)", 0, 2, 1)
         oldpeak = st.sidebar.slider("Depresi segmen ST (oldpeak)", 0.0, 6.2, 1.0)
         
-        exang = st.sidebar.slider("Exercise Induced Angina (exang)", 0, 1, 1)
+        exang = st.sidebar.slider("Nyeri dada saat olahraga (exang)", 0, 1, 1)
         if exang == 0:
             wexang = "Tidak"
         else:
