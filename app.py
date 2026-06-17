@@ -184,7 +184,8 @@ else:
         sex = st.sidebar.selectbox("Jenis Kelamin", ('Perempuan', 'Pria'))
         if sex == "Perempuan":
             sex = 0
-        else: sex = 1
+        elif sex == "Pria":
+            sex = 1
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
