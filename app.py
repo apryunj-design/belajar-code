@@ -222,7 +222,7 @@ else:
 
         data = {
             'sex': sex,
-            'age': age
+            'age': age,
             'cp': cp,
             'thalach': thalach,
             'slope': slope,
