@@ -186,7 +186,7 @@ else:
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
-        cp = st.sidebar.slider('Jenis nyeri dada (cp)', [0, 1 ,2 , 3])
+        cp = st.sidebar.slider("Jenis nyeri dada (cp)", 0, 3, 1)
         if cp == 0:
             wcp = "Nyeri dada tipe angina"
         elif cp == 1:
