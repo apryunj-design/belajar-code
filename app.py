@@ -186,12 +186,12 @@ else:
 
         age = st.sidebar.slider("Usia", 20, 100, 50)
 
-        cp = st.sidebar.slider('Jenis nyeri dada (cp)', 1, 4, 1)
-        if cp == 1:
+        cp = st.sidebar.slider("Jenis nyeri dada (cp)", [0, 1 ,2 , 3])
+        if cp == 0:
             wcp = "Nyeri dada tipe angina"
-        elif cp == 2:
+        elif cp == 1:
             wcp = "Nyeri dada tipe nyeri tidak stabil"
-        elif cp == 3:
+        elif cp == 2:
             wcp = "Nyeri dada tipe nyeri tidak stabil yang parah"
         else:
             wcp = "Nyeri dada tidak terkait dengan masalah jantung"
