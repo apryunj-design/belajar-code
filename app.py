@@ -229,7 +229,7 @@ else:
             'ca': ca,
             'thal': thal,
             'sex': sex,
-            'age': age,
+            'age': age
         }
         features = pd.DataFrame(data, index=[0])
         return features
