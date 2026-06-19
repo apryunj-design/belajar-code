@@ -221,15 +221,15 @@ else:
     
 
         data = {
+            'sex': sex,
+            'age': age
             'cp': cp,
             'thalach': thalach,
             'slope': slope,
             'oldpeak': oldpeak,
             'exang': exang,
             'ca': ca,
-            'thal': thal,
-            'sex': sex,
-            'age': age
+            'thal': thal
         }
         features = pd.DataFrame(data, index=[0])
         return features
